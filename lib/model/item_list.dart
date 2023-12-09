@@ -1,12 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'todo.dart';
 
 class ItemList extends StatelessWidget {
-  final Todo dataList;
-  const ItemList({super.key, required this.dataList});
+  final String transaksiDocId;
+  final Todo todo;
+  const ItemList({super.key, required this.todo, required this.transaksiDocId});
 
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    CollectionReference todoCollection = _firestore.collection('Todos');
+    TextEditingController _titleController = TextEditingController();
+    TextEditingController _descriptionController = TextEditingController();
+
+    Future<void> deleteTodo() async {
+      await _firestore.collection('Todos').doc(transaksiDocId).delete();
+    }
+
+    Future<void> updateTodo() async {
+      await _firestore.collection('Todos').doc(transaksiDocId).update({
+        'title': _titleController.text,
+        'description': _descriptionController.text,
+        'isComplete': false,
+      });
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       height: 100,
