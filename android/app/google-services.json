@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "78533009743",
+    "project_id": "studi-kasus-to-do-list",
+    "storage_bucket": "studi-kasus-to-do-list.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78533009743:android:88aa8087a87f7d46ece53a",
+        "android_client_info": {
+          "package_name": "com.example.base_todolist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9pyhqci2pC6qwJ_3mo6j9cRt7iPzc6rs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
