@@ -49,7 +49,7 @@ class ItemList extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  dataList.nama,
+                  todo.title,
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -57,7 +57,7 @@ class ItemList extends StatelessWidget {
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  dataList.deskripsi,
+                  todo.description,
                   style: const TextStyle(
                     fontSize: 16,
                   ),
@@ -66,36 +66,52 @@ class ItemList extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          const ChecklistButton(),
+          IconButton(
+            onPressed: () {
+              todoCollection.doc(transaksiDocId).update({
+                'isComplete': !todo.isComplete,
+              });
+            },
+            icon: Icon(
+              todo.isComplete ? Icons.check_box : Icons.check_box_outline_blank,
+              color: todo.isComplete ? Colors.blue : Colors.grey,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              deleteTodo();
+            },
+            icon: const Icon(Icons.delete),
+          )
         ],
       ),
     );
   }
 }
 
-class ChecklistButton extends StatefulWidget {
-  const ChecklistButton({super.key});
+// class ChecklistButton extends StatefulWidget {
+//   const ChecklistButton({super.key});
 
-  @override
-  State<ChecklistButton> createState() => _ChecklistButtonState();
-}
+//   @override
+//   State<ChecklistButton> createState() => _ChecklistButtonState();
+// }
 
-class _ChecklistButtonState extends State<ChecklistButton> {
-  bool isChecked = false;
+// class _ChecklistButtonState extends State<ChecklistButton> {
+//   bool isChecked = false;
 
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        isChecked ? Icons.check_box : Icons.check_box_outline_blank,
-        color: isChecked ? Colors.blue : Colors.grey,
-        size: 25,
-      ),
-      onPressed: () {
-        setState(() {
-          isChecked = !isChecked;
-        });
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return IconButton(
+//       icon: Icon(
+//         isChecked ? Icons.check_box : Icons.check_box_outline_blank,
+//         color: isChecked ? Colors.blue : Colors.grey,
+//         size: 25,
+//       ),
+//       onPressed: () {
+//         setState(() {
+//           isChecked = !isChecked;
+//         });
+//       },
+//     );
+//   }
+// }
