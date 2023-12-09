@@ -1,4 +1,4 @@
-import 'package:base_todolist/login_page.dart';
+import 'package:base_todolist/view/login_page.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {

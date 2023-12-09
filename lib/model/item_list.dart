@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'model/todo.dart';
+import 'todo.dart';
 
 class ItemList extends StatelessWidget {
   final Todo dataList;

@@ -1,6 +1,6 @@
-import 'package:base_todolist/item_list.dart';
+import 'package:base_todolist/model/item_list.dart';
 import 'package:flutter/material.dart';
-import 'model/todo.dart';
+import 'package:base_todolist/model/todo.dart';
 
 class TodoPage extends StatelessWidget {
   final Todo dataList;
