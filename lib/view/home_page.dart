@@ -17,47 +17,48 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+  bool isComplete = false;
+
   @override
   void initState() {
     super.initState();
     // getTodo();
   }
 
+  Future<void> _signOut() async {
+    await _auth.signOut();
+    runApp(const MaterialApp(
+      home: LoginPage(),
+    ));
+  }
+
+  Future<QuerySnapshot>? searchResultsFuture;
+  Future<void> searchResult(String textEntered) async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection("Todos")
+        .where("title", isGreaterThanOrEqualTo: textEntered)
+        // ignore: prefer_interpolation_to_compose_strings
+        .where("title", isLessThan: textEntered + 'z')
+        .get();
+
+    setState(() {
+      searchResultsFuture = Future.value(querySnapshot);
+    });
+  }
+
+  void cleartext() {
+    _titleController.clear();
+    _descriptionController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth _auth = FirebaseAuth.instance;
-    FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-    TextEditingController _titleController = TextEditingController();
-    TextEditingController _descriptionController = TextEditingController();
-    TextEditingController _searchController = TextEditingController();
-    bool isComplete = false;
-
-    Future<void> _signOut() async {
-      await _auth.signOut();
-      runApp(const MaterialApp(
-        home: LoginPage(),
-      ));
-    }
-
-    Future<QuerySnapshot>? searchResultsFuture;
-    Future<void> searchResult(String textEntered) async {
-      QuerySnapshot querySnapshot = await _firestore
-          .collection("Todos")
-          .where("title", isGreaterThanOrEqualTo: textEntered)
-          .where("title", isLessThan: textEntered + 'z')
-          .get();
-
-      setState(() {
-        searchResultsFuture = Future.value(querySnapshot);
-      });
-    }
-
-    void cleartext() {
-      _titleController.clear();
-      _descriptionController.clear();
-    }
-
     CollectionReference todoCollection = _firestore.collection('Todos');
     final User? user = _auth.currentUser;
 
