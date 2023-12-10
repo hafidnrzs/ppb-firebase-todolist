@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'todo.dart';
@@ -22,7 +24,6 @@ class ItemList extends StatelessWidget {
       await _firestore.collection('Todos').doc(transaksiDocId).update({
         'title': _titleController.text,
         'description': _descriptionController.text,
-        'isComplete': false,
       });
     }
 
@@ -31,7 +32,7 @@ class ItemList extends StatelessWidget {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Update Todo'),
+            title: const Text('Update Todo'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -40,7 +41,7 @@ class ItemList extends StatelessWidget {
                       // ignore: unnecessary_null_comparison
                       todo.title == null ? _titleController : _titleController
                         ..text = todo.title,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Title',
                   ),
                 ),
@@ -50,7 +51,7 @@ class ItemList extends StatelessWidget {
                       ? _descriptionController
                       : _descriptionController
                     ..text = todo.description,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Description',
                   ),
                 ),
@@ -137,30 +138,3 @@ class ItemList extends StatelessWidget {
     );
   }
 }
-
-// class ChecklistButton extends StatefulWidget {
-//   const ChecklistButton({super.key});
-
-//   @override
-//   State<ChecklistButton> createState() => _ChecklistButtonState();
-// }
-
-// class _ChecklistButtonState extends State<ChecklistButton> {
-//   bool isChecked = false;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return IconButton(
-//       icon: Icon(
-//         isChecked ? Icons.check_box : Icons.check_box_outline_blank,
-//         color: isChecked ? Colors.blue : Colors.grey,
-//         size: 25,
-//       ),
-//       onPressed: () {
-//         setState(() {
-//           isChecked = !isChecked;
-//         });
-//       },
-//     );
-//   }
-// }

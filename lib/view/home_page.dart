@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:base_todolist/model/item_list.dart';
 import 'package:base_todolist/view/login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:base_todolist/model/todo.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() {
@@ -15,48 +17,47 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _searchController = TextEditingController();
-  bool isComplete = false;
-
-  Future<void> _signOut() async {
-    await _auth.signOut();
-    runApp(new MaterialApp(
-      home: new LoginPage(),
-    ));
-  }
-
-  Future<QuerySnapshot>? searchResultsFuture;
-  Future<void> searchResult(String textEntered) async {
-    QuerySnapshot querySnapshot = await _firestore
-        .collection("Todos")
-        .where("title", isGreaterThanOrEqualTo: textEntered)
-        .where("title", isLessThan: textEntered + 'z')
-        .get();
-
-    setState(() {
-      searchResultsFuture = Future.value(querySnapshot);
-    });
-  }
-
-  void cleartext() {
-    _titleController.clear();
-    _descriptionController.clear();
-  }
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // getTodo();
   }
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    TextEditingController _titleController = TextEditingController();
+    TextEditingController _descriptionController = TextEditingController();
+    TextEditingController _searchController = TextEditingController();
+    bool isComplete = false;
+
+    Future<void> _signOut() async {
+      await _auth.signOut();
+      runApp(const MaterialApp(
+        home: LoginPage(),
+      ));
+    }
+
+    Future<QuerySnapshot>? searchResultsFuture;
+    Future<void> searchResult(String textEntered) async {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection("Todos")
+          .where("title", isGreaterThanOrEqualTo: textEntered)
+          .where("title", isLessThan: textEntered + 'z')
+          .get();
+
+      setState(() {
+        searchResultsFuture = Future.value(querySnapshot);
+      });
+    }
+
+    void cleartext() {
+      _titleController.clear();
+      _descriptionController.clear();
+    }
+
     CollectionReference todoCollection = _firestore.collection('Todos');
     final User? user = _auth.currentUser;
 
@@ -73,29 +74,29 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Todo List'),
+        title: const Text('Todo List'),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Logout'),
-                  content: Text('Apakah Anda yakin ingin logout?'),
+                  title: const Text('Logout'),
+                  content: const Text('Apakah Anda yakin ingin logout?'),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text('Tidak'),
+                      child: const Text('Tidak'),
                     ),
                     TextButton(
                         onPressed: () {
                           _signOut();
                         },
-                        child: Text('Ya'))
+                        child: const Text('Ya'))
                   ],
                 ),
               );
@@ -106,9 +107,9 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: 'Search',
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder()),
@@ -132,10 +133,10 @@ class _HomePageState extends State<HomePage> {
                     ? searchResultsFuture!
                         .asStream()
                         .cast<QuerySnapshot<Map<String, dynamic>>>()
-                    : Stream.empty(),
+                    : const Stream.empty(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
               List<Todo> listTodo = snapshot.data!.docs.map((document) {
                 final data = document.data();
@@ -171,7 +172,7 @@ class _HomePageState extends State<HomePage> {
           showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                    title: Text('Tambah Todo'),
+                    title: const Text('Tambah Todo'),
                     content: SizedBox(
                       width: 200,
                       height: 100,
@@ -179,23 +180,23 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           TextField(
                               controller: _titleController,
-                              decoration:
-                                  InputDecoration(hintText: 'Judul Todo')),
+                              decoration: const InputDecoration(
+                                  hintText: 'Judul Todo')),
                           TextField(
                             controller: _descriptionController,
-                            decoration:
-                                InputDecoration(hintText: 'Deskripsi Todo'),
+                            decoration: const InputDecoration(
+                                hintText: 'Deskripsi Todo'),
                           )
                         ],
                       ),
                     ),
                     actions: [
                       TextButton(
-                        child: Text('Batal'),
+                        child: const Text('Batal'),
                         onPressed: () => Navigator.pop(context),
                       ),
                       TextButton(
-                        child: Text('Tambah'),
+                        child: const Text('Tambah'),
                         onPressed: () {
                           addTodo();
                           cleartext();
@@ -205,92 +206,8 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ));
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
 }
-
-// class TodoPage extends StatelessWidget {
-//   final Todo dataList;
-//   const TodoPage({super.key, required this.dataList});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Todo List'),
-//         centerTitle: true,
-//       ),
-//       body: Column(
-//         children: [
-//           const Padding(
-//             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-//             child: TextField(
-//               decoration: InputDecoration(
-//                 labelText: 'Search',
-//                 prefixIcon: Icon(Icons.search),
-//                 border: OutlineInputBorder(),
-//               ),
-//             ),
-//           ),
-//           Expanded(
-//             child: ListView.builder(
-//               itemCount: listdata.length,
-//               itemBuilder: (context, index) {
-//                 return ItemList(
-//                   dataList: listdata[index],
-//                 );
-//               },
-//             ),
-//           ),
-//         ],
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           showDialog(
-//             context: context,
-//             builder: (context) => AlertDialog(
-//               title: const Text(
-//                 'Tambah Data',
-//               ),
-//               content: const Column(
-//                 mainAxisSize: MainAxisSize.min,
-//                 children: [
-//                   TextField(
-//                     decoration: InputDecoration(
-//                       labelText: 'Nama Kegiatan',
-//                       border: OutlineInputBorder(),
-//                     ),
-//                   ),
-//                   SizedBox(height: 10),
-//                   TextField(
-//                     decoration: InputDecoration(
-//                       labelText: 'Deskripsi Kegiatan',
-//                       border: OutlineInputBorder(),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//               actions: [
-//                 TextButton(
-//                   onPressed: () {
-//                     Navigator.pop(context);
-//                   },
-//                   child: const Text('Batal'),
-//                 ),
-//                 TextButton(
-//                   onPressed: () {
-//                     Navigator.pop(context);
-//                   },
-//                   child: const Text('Simpan'),
-//                 ),
-//               ],
-//             ),
-//           );
-//         },
-//         child: const Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }
