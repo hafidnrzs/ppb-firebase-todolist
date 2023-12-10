@@ -18,9 +18,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _usernameController = TextEditingController();
 
   void toLogin() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const LoginPage();
-    }));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
   }
 
   Future addUser(String username, String email, String password) async {
@@ -103,31 +104,37 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 10),
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: _usernameController,
+                      decoration: const InputDecoration(
                         labelText: 'Username',
                         prefixIcon: Icon(Icons.person),
                         border: OutlineInputBorder(),
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 10),
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
                         labelText: 'Email',
                         prefixIcon: Icon(Icons.email),
                         border: OutlineInputBorder(),
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 10),
                     child: TextField(
+                      controller: _passwordController,
                       obscureText: true,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Password',
                         prefixIcon: Icon(Icons.lock),
                         border: OutlineInputBorder(),
@@ -141,14 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       style: TextStyle(fontSize: 16),
                     ),
                     TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
-                          ),
-                        );
-                      },
+                      onPressed: toLogin,
                       child: const Text(
                         'Sign In',
                         style: TextStyle(
@@ -161,14 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterPage(),
-                        ),
-                      );
-                    },
+                    onPressed: register,
                     child: const Text(
                       'Register',
                       style:
