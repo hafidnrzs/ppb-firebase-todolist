@@ -26,64 +26,113 @@ class ItemList extends StatelessWidget {
       });
     }
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      height: 100,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            offset: Offset(0, 2),
-            blurRadius: 6,
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Update Todo'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  todo.title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                TextField(
+                  controller:
+                      // ignore: unnecessary_null_comparison
+                      todo.title == null ? _titleController : _titleController
+                        ..text = todo.title,
+                  decoration: InputDecoration(
+                    hintText: 'Title',
                   ),
                 ),
-                const SizedBox(height: 15),
-                Text(
-                  todo.description,
-                  style: const TextStyle(
-                    fontSize: 16,
+                TextField(
+                  // ignore: unnecessary_null_comparison
+                  controller: todo.description == null
+                      ? _descriptionController
+                      : _descriptionController
+                    ..text = todo.description,
+                  decoration: InputDecoration(
+                    hintText: 'Description',
                   ),
                 ),
               ],
             ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Batalkan'),
+              ),
+              TextButton(
+                onPressed: () {
+                  updateTodo();
+                  Navigator.pop(context);
+                },
+                child: const Text('Update'),
+              ),
+            ],
           ),
-          const SizedBox(width: 10),
-          IconButton(
-            onPressed: () {
-              todoCollection.doc(transaksiDocId).update({
-                'isComplete': !todo.isComplete,
-              });
-            },
-            icon: Icon(
-              todo.isComplete ? Icons.check_box : Icons.check_box_outline_blank,
-              color: todo.isComplete ? Colors.blue : Colors.grey,
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        height: 100,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              offset: Offset(0, 2),
+              blurRadius: 6,
             ),
-          ),
-          IconButton(
-            onPressed: () {
-              deleteTodo();
-            },
-            icon: const Icon(Icons.delete),
-          )
-        ],
+          ],
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    todo.title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    todo.description,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            IconButton(
+              onPressed: () {
+                todoCollection.doc(transaksiDocId).update({
+                  'isComplete': !todo.isComplete,
+                });
+              },
+              icon: Icon(
+                todo.isComplete
+                    ? Icons.check_box
+                    : Icons.check_box_outline_blank,
+                color: todo.isComplete ? Colors.blue : Colors.grey,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                deleteTodo();
+              },
+              icon: const Icon(Icons.delete),
+            )
+          ],
+        ),
       ),
     );
   }
